@@ -1,0 +1,18 @@
+version: '2'
+services:
+  billmanager:
+    build:
+      context: billmanager
+    restart: always
+    tty: true
+    ports:
+      - "1500:1500"
+    volumes:
+      - billmanager-data:/usr/local/mgr5
+      - billmanager-db-data:/var/lib/mysql
+      - ./.ssh:/root/.ssh
+volumes:
+  billmanager-data:
+    driver: local
+  billmanager-db-data:
+    driver: local
