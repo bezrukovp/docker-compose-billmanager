@@ -5,6 +5,7 @@ MAINTAINER Pavel Bezrukov, https://bezr.pro
 ARG lang=ru_RU.UTF-8
 ARG language=ru_RU1:ru
 ARG tz=Europe/Moscow
+ARG billmgrVersion=advanced
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV CORE_DIR /usr/local/mgr5
@@ -27,7 +28,7 @@ ENV LC_ALL ${lang}
 RUN apt-get update && apt-get install -y wget curl mc vim nano htop rsync man
 
 RUN wget http://cdn.ispsystem.com/install.sh && \
-    sh install.sh --release stable --ignore-hostname --silent --no-letsencrypt --disable-fail2ban billmanager-advanced
+    sh install.sh --release stable --ignore-hostname --silent --no-letsencrypt --disable-fail2ban billmanager-$billmgrVersion
 
 COPY entrypoint.sh /entrypoint.sh
 
