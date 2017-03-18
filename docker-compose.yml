@@ -1,6 +1,6 @@
 version: '2'
 services:
-  billmanager:
+  bmgr:
     build:
       context: billmanager
     restart: always
@@ -8,11 +8,13 @@ services:
     ports:
       - "1500:1500"
     volumes:
-      - billmanager-data:/usr/local/mgr5
-      - billmanager-db-data:/var/lib/mysql
-      - ./.ssh:/root/.ssh
+      - bmgr:/usr/local/mgr5
+      - bmgr_db:/var/lib/mysql
+      - bmgr_root_ssh:/root/.ssh
 volumes:
-  billmanager-data:
+  bmgr:
     driver: local
-  billmanager-db-data:
+  bmgr_db:
+    driver: local
+  bmgr_root_ssh:
     driver: local
