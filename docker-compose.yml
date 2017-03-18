@@ -5,8 +5,8 @@ services:
       context: billmanager
     restart: always
     tty: true
-    ports:
-      - "1500:1500"
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
     volumes:
       - bmgr:/usr/local/mgr5
       - bmgr_db:/var/lib/mysql

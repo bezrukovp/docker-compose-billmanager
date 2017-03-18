@@ -25,7 +25,12 @@ ENV LANG ${lang}
 ENV LANGUAGE ${language}
 ENV LC_ALL ${lang}
 
-RUN apt-get update && apt-get install -y wget curl mc vim nano htop rsync man
+RUN apt-get update && apt-get install -y wget curl mc vim nano htop rsync man net-tools openssh-server && \
+    sed -i -e "s/PermitRootLogin no/PermitRootLogin without-password/" /etc/ssh/sshd_config && \
+    cat /dev/zero | ssh-keygen -q -N "" && \
+    cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys && \
+    chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub && \
+    chmod 400 /root/.ssh/id_rsa
 
 RUN wget http://cdn.ispsystem.com/install.sh && \
     sh install.sh --release stable --ignore-hostname --silent --no-letsencrypt --disable-fail2ban billmanager-$billmgrVersion
@@ -33,8 +38,10 @@ RUN wget http://cdn.ispsystem.com/install.sh && \
 COPY mgr5/etc/ihttpd.conf ${CORE_DIR}/etc/ihttpd.conf
 COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+VOLUME $CORE_DIR /var/lib/mysql
 
-EXPOSE 1500
+EXPOSE 22 80
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["billmgr"]
