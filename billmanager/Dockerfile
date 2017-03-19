@@ -6,9 +6,11 @@ ARG lang=ru_RU.UTF-8
 ARG language=ru_RU:ru
 ARG tz=Europe/Moscow
 ARG billmgrVersion=advanced
+ARG billmgrRootPassword=Docker!
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV CORE_DIR /usr/local/mgr5
+ENV BMGR_ROOT_PASSWORD Docker!
 
 RUN apt-get update && apt-get install -y apt-utils locales && \
     locale-gen --purge $lang en_US.UTF-8 && \
@@ -30,7 +32,8 @@ RUN apt-get update && apt-get install -y wget curl mc vim nano htop rsync man ne
     cat /dev/zero | ssh-keygen -q -N "" && \
     cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys && \
     chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub && \
-    chmod 400 /root/.ssh/id_rsa
+    chmod 400 /root/.ssh/id_rsa && \
+    echo "root:$billmgrRootPassword" | chpasswd
 
 RUN wget http://cdn.ispsystem.com/install.sh && \
     sh install.sh --release stable --ignore-hostname --silent --no-letsencrypt --disable-fail2ban billmanager-$billmgrVersion

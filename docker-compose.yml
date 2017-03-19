@@ -3,6 +3,8 @@ services:
   bmgr:
     build:
       context: billmanager
+      args:
+        - billmgrRootPassword=${BMGR_ROOT_PASSWORD}
     restart: always
     tty: true
     environment:
